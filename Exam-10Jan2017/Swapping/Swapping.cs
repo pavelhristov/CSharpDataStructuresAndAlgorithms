@@ -9,11 +9,11 @@ namespace Swapping
         {
             int n = int.Parse(Console.ReadLine());
             var numbers = Console.ReadLine().Split(' ').Select(int.Parse).ToArray();
-            WeirdStructure wtf = new WeirdStructure();
+            WeirdStructure wtf = new WeirdStructure(n);
 
             for (int i = 1; i <= n; i++)
             {
-                wtf.Add(new Node(i));
+                wtf.Add(i);
             }
 
             foreach (var item in numbers)
@@ -82,15 +82,30 @@ namespace Swapping
             // more like custom LinkedList with required functionality
             private Node start;
             private Node end;
+            private Node[] array;
 
             public WeirdStructure()
             {
                 this.start = null;
                 this.end = null;
+                this.array = null;
             }
 
-            public void Add(Node element)
+            public WeirdStructure(int length)
             {
+                this.start = null;
+                this.end = null;
+                this.array = new Node[length + 1];
+            }
+
+            public void Add(int value)
+            {
+                Node element = new Node(value);
+                if (this.array != null)
+                {
+                    this.array[value] = element;
+                }
+
                 if (this.start == null)
                 {
                     this.start = element;
@@ -106,7 +121,16 @@ namespace Swapping
 
             public void Swap(int number)
             {
-                Node found = Find(number);
+                Node found;
+                if (this.array == null)
+                {
+                    found = Find(number);
+                }
+                else
+                {
+                    found = this.array[number];
+                }
+
                 if (found == null)
                 {
                     throw new ArgumentNullException("Value not found!");
